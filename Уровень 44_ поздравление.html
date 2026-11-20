@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Уровень 44: поздравление</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--border:#c8c8c8;--screen:#fff;--ink:#000;--muted:#3d3d3d;--accent:#0000d7;--accent-ink:#fff;--fill:#d70000;--ok:#007a00;color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--border:#7869c4;--screen:#352879;--ink:#fff;--muted:#cfc9ff;--accent:#eeee77;--accent-ink:#352879;--fill:#9ad284;--ok:#9ad284}}
+:root[data-theme="dark"]{--border:#7869c4;--screen:#352879;--ink:#fff;--muted:#cfc9ff;--accent:#eeee77;--accent-ink:#352879;--fill:#9ad284;--ok:#9ad284}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{min-height:100%;margin:0;padding:16px;display:flex;justify-content:center;background:var(--border);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+[hidden]{display:none!important}
+.screen{width:100%;max-width:34rem;align-self:flex-start;background:var(--screen);padding:22px 20px 26px;outline:none;min-height:calc(100svh - 32px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+.scene{animation:scene .3s steps(1)}
+@keyframes scene{0%{opacity:0}25%{opacity:1}50%{opacity:.25}75%{opacity:1}}
+.pix,.boot{font-family:"Press Start 2P","Courier New",monospace;font-weight:400;overflow-wrap:anywhere}
+.pix{font-size:15px;line-height:1.7;margin:0 0 16px}
+.boot{font-size:11px;line-height:2;color:var(--muted);margin:0 0 18px}
+.cur{display:inline-block;width:.8em;height:1em;background:var(--ink);vertical-align:-.15em;animation:cur 1s steps(1) infinite}
+@keyframes cur{50%{opacity:0}}
+.lead{margin:0 0 20px}
+.note{margin:18px 0 0;font-size:14px;color:var(--muted)}
+.lab{display:block;font-weight:600;margin:0 0 10px}
+label.lab{margin-bottom:22px}
+input{display:block;width:100%;min-height:48px;margin-top:8px;padding:10px 12px;font:inherit;color:var(--ink);background:var(--screen);border:3px solid var(--ink);border-radius:0}
+input::placeholder{color:var(--muted);opacity:.8}
+input:focus-visible,.btn:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.btn{display:block;width:100%;min-height:48px;margin:0 0 14px;padding:12px 14px;text-align:left;font:inherit;font-weight:600;color:var(--ink);background:transparent;border:3px solid var(--ink);border-radius:0;box-shadow:4px 4px 0 var(--ink);cursor:pointer;transition:transform .08s,box-shadow .08s}
+.btn:active:not(:disabled){transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.btn.on,.btn.go{background:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.45;cursor:default;box-shadow:none}
+.btn.on:disabled{opacity:1}
+.status{margin:0 0 24px}
+.row{display:flex;justify-content:space-between;gap:12px;margin-bottom:6px;font-size:14px;color:var(--muted)}
+.track{height:16px;border:3px solid var(--ink)}
+.track i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--fill) 0 7px,transparent 7px 9px);transition:width .7s steps(12)}
+.reaction{margin:6px 0 20px;padding:4px 0 4px 12px;border-left:6px solid var(--ok);animation:scene .35s steps(1)}
+.big{font-family:"Press Start 2P","Courier New",monospace;font-size:clamp(64px,22vw,104px);line-height:1;margin:4px 0 20px;color:var(--accent);text-shadow:6px 6px 0 var(--fill)}
+.award{margin:0 0 22px;padding:12px 14px;background:var(--accent);color:var(--accent-ink);font-weight:600}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0 0 22px;padding:12px 14px;border:3px solid var(--ink);font-size:15px}
+dt{color:var(--muted)}dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.conf{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main id="app" class="screen" tabindex="-1"><noscript>Для игры нужен включённый JavaScript.</noscript></main>
+<script>
+(function(){
+var app=document.getElementById('app');
+var S={name:'',cls:'',xp:0,q:0};
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var CLASSES=['Мудрый стратег','Мастер на все руки','Душа компании','Хранитель семейных историй'];
+var QUESTS=[
+ {t:'Квест 1. Звонок',q:'Раннее утро, телефон разрывается: звонит родня с поздравлениями. Что делаешь?',xp:12,c:[
+  ['Беру трубку и благодарю','Дипломатия растёт. Родня растрогана и обещает перезвонить на всякий случай.'],
+  ['Делаю вид, что сплю','Не сработало: родню не обмануть, поздравления найдут тебя везде.'],
+  ['Отвечаю шуткой','Критический успех! Теперь с тебя шутки и в следующем году.']]},
+ {t:'Квест 2. Тост',q:'Вечер. Стол накрыт, гости в сборе, и все смотрят на тебя: ждут тост. Твой ход?',xp:14,c:[
+  ['Сказать коротко и по делу','Мудро. Тебя уважают, а оливье не успевает нагреться.'],
+  ['Рассказать историю из молодости','Легенда! Правда, с каждым пересказом история растёт в масштабе. Все делают вид, что верят.'],
+  ['Передать слово соседу','Тактическое отступление засчитано. Но тост про тебя всё равно скажут: громко и с чувством.']]},
+ {t:'Финальный босс',q:'Из тумана выходит босс: цифра 44. Смотрит строго. Чем бить?',xp:18,c:[
+  ['Заявить, что это новые тридцать','Босс моргает. Арифметика не сдаётся, зато уверенность растёт на сто.'],
+  ['Принять как есть','Босс уважительно кивает и уходит в закат. Зрелость на максимуме.'],
+  ['Сослаться на год выпуска: 1982','Винтаж. Коллекционная серия. Босс прикидывает цену и теряет дар речи.']]}
+];
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function btn(txt,fn,c){var b=el('button','btn'+(c?' '+c:''),txt);b.type='button';b.onclick=fn;return b}
+function name(){return S.name.trim()||'Леша'}
+function show(){
+ app.replaceChildren.apply(app,arguments);
+ app.classList.remove('scene');void app.offsetWidth;app.classList.add('scene');
+ window.scrollTo(0,0);app.focus({preventScroll:true});
+}
+function status(){
+ var box=el('div','status'),row=el('div','row'),who=el('span','',name()+', '+S.cls.toLowerCase()),xp=el('span','','Опыт '+S.xp+'/44');
+ var tr=el('div','track'),f=document.createElement('i');
+ f.style.width=(S.xp/44*100)+'%';row.append(who,xp);tr.append(f);box.append(row,tr);
+ box.set=function(v){S.xp=v;xp.textContent='Опыт '+v+'/44';f.style.width=(v/44*100)+'%'};
+ return box;
+}
+function intro(){
+ var r=el('p','boot','ГОТОВ. ');r.append(el('span','cur'));
+ show(el('h1','pix','*** УРОВЕНЬ 44 ***'),
+  el('p','boot','ГЕРОЙ 44.0 ГОТОВ К ЗАПУСКУ. 64К ОПЫТА, 38911 СЕМЕЙНЫХ ИСТОРИЙ СВОБОДНО.'),
+  el('p','lead','Сегодня в системе зафиксировано важное событие: пользователь выходит на новый уровень. Чтобы получить награду, нужно пройти три коротких квеста.'),
+  r,btn('Начать игру',hero,'go'),el('p','note','Дата релиза: 20.11.1982'));
+}
+function hero(){
+ S.cls='';
+ var lab=el('label','lab','Имя героя'),inp=document.createElement('input');
+ inp.placeholder='Как тебя зовут?';inp.maxLength=24;inp.autocomplete='off';lab.append(inp);
+ var list=el('div','choices'),go=btn('В путь',function(){S.name=inp.value;S.xp=0;S.q=0;quest()},'go');
+ go.disabled=true;
+ CLASSES.forEach(function(c){
+  var b=btn(c,function(){S.cls=c;Array.prototype.forEach.call(list.children,function(x){x.classList.toggle('on',x===b)});go.disabled=false});
+  list.append(b);
+ });
+ show(el('h2','pix','Создай героя'),el('p','lead','Введи имя и выбери класс. Остальное игра придумает сама.'),lab,el('p','lab','Класс'),list,go);
+}
+function quest(){
+ var Q=QUESTS[S.q],st=status(),list=el('div','choices'),out=el('p','reaction');
+ out.hidden=true;
+ var next=btn(S.q<2?'Дальше':'Забрать награду',function(){S.q++;S.q<3?quest():final()},'go');
+ next.hidden=true;
+ Q.c.forEach(function(o){
+  var b=btn(o[0],function(){
+   Array.prototype.forEach.call(list.children,function(x){x.disabled=true});
+   b.classList.add('on');out.textContent=o[1];out.hidden=false;
+   st.set(S.xp+Q.xp);next.hidden=false;next.focus();
+  });
+  list.append(b);
+ });
+ show(st,el('h2','pix',Q.t),el('p','lead',Q.q),list,out,next);
+}
+function final(){
+ S.xp=44;
+ var dl=el('dl');
+ [['Имя героя',name()],['Класс',S.cls],['Выпуск','20.11.1982'],['Версия','44.0'],['Опыт','44 из 44']].forEach(function(r){dl.append(el('dt','',r[0]),el('dd','',r[1]))});
+ show(status(),el('h2','pix','Уровень 44 получен'),el('div','big','44'),
+  el('p','lead',name()+', поздравляю с днём рождения!'),
+  el('p','lead','44 года — это не возраст, а коллекционное издание: тираж ограничен, качество проверено временем, и с каждым годом ты только ценнее.'),
+  el('p','lead','Желаю здоровья, чтобы всё получалось с первого раза, а близкие радовали чаще, чем требовали советов. Пусть дела спорятся, деньги находят дорогу сами, а настроение обходится без обязательных обновлений.'),
+  el('p','lead','А если серьёзно: рядом с тобой в семье спокойнее и теплее. Спасибо, что ты есть.'),
+  el('p','award','Награда: титул «Лучший дядя». Вручается без экзамена и без права апелляции.'),
+  dl,btn('Пройти заново',hero));
+ if(!reduce)confetti();
+}
+function confetti(){
+ var c=el('canvas','conf'),x=c.getContext('2d'),d=window.devicePixelRatio||1;
+ document.body.append(c);
+ var W=c.width=innerWidth*d,H=c.height=innerHeight*d,cs=getComputedStyle(document.documentElement);
+ var cols=['--accent','--fill','--ink'].map(function(v){return cs.getPropertyValue(v).trim()}).concat(['#ee7777','#77ccee']);
+ var P=[];
+ for(var i=0;i<140;i++)P.push({x:Math.random()*W,y:-Math.random()*H*.6,s:(6+Math.random()*8)*d,v:(2+Math.random()*3)*d,w:(Math.random()-.5)*2*d,c:cols[Math.random()*cols.length|0]});
+ var t=0;
+ (function f(){
+  x.clearRect(0,0,W,H);
+  P.forEach(function(p){p.y+=p.v;p.x+=p.w;x.fillStyle=p.c;x.fillRect(p.x,p.y,p.s,p.s)});
+  if(++t<260)requestAnimationFrame(f);else c.remove();
+ })();
+}
+intro();
+})();
+</script>
+</body>
+</html>
